@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/red_bg_gradient">
+
+    <RelativeLayout
+        android:id="@+id/barCon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/monthCon"
+        android:layout_margin="36dp">
+
+        <LinearLayout
+            android:id="@+id/verticalBarCon_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/whiteBarCon_ll"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/whiteBarCon_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Animate"
+            android:id="@+id/reanimate"
+            android:textColor="#FFF"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/whiteBarCon_ll"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/monthCon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="54dp"
+        android:orientation="horizontal" />
+</RelativeLayout>
