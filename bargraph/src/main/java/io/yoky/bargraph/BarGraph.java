@@ -1,6 +1,7 @@
 package io.yoky.bargraph;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,7 +20,8 @@ public class BarGraph {
     private Random random;
     private int mTotalBars, mLeftMargin, mRightMargin;
     private BarGraphTouchListener mBarGraphOnTouchListener;
-
+    private boolean isAnimating = false;
+    private Handler handler;
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -72,6 +74,7 @@ public class BarGraph {
         mBarCon = barCon;
         mBottomCon = bottomCon;
         random = new Random();
+        handler = new Handler();
     }
 
     public void addGraph(ArrayList<Integer> dataList,int leftMargin, int rightMargin, BarGraphTouchListener bargraphTouchListener, int animationDuration) {
@@ -116,9 +119,20 @@ public class BarGraph {
     }
 
     public void animateGraph(int duration) {
+        isAnimating = true;
         for(int i=0;i<mTotalBars;i++){
             ((RectangleBar) mBarCon.getChildAt(i)).showView(duration);
         }
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isAnimating = false;
+            }
+        },duration);
+    }
+
+    public boolean isAnimating(){
+        return isAnimating;
     }
 
     private void disableClipOnParents(View v, boolean disable) {

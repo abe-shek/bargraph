@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="54dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="4dp"
+    android:layout_marginStart="4dp">
+
+    <io.yoky.graphtest.YTextView
+        android:id="@+id/monthName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:textColor="#fff"
+        android:textSize="14sp"
+        custom:yfont="gill"
+        custom:ykern="5" />
+
+    <View
+        android:id="@+id/highlighter"
+        android:layout_width="wrap_content"
+        android:layout_height="4dp"
+        android:layout_below="@id/monthName"
+        android:layout_marginTop="4dp"
+        android:background="#fff3c7a1" />
+
+</RelativeLayout>

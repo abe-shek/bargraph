@@ -22,7 +22,7 @@ public class RectangleBar extends View {
     float r;
     int minH = 600, mode = 0;
     Point pt;
-    public int pos = 0;
+    public int pos = -1;
     boolean isHovered = false, animate = false;
     public String textString1 = "", textString2 = "";
     Shader gradientShader;
@@ -75,8 +75,8 @@ public class RectangleBar extends View {
             }
             c.drawRoundRect(isHovered ? rectFThick : rectFThin, 2, 2, bgPaint);
             if (isHovered) {
-                c.drawLine(pt.x, pt.y, pt.x, 0, lPaint);
                 if (pos == 0) {
+                    c.drawLine(pt.x, pt.y, pt.x, 0, lPaint);
                     c.drawPath(pathMode0, lPaint);
                     tPaint.setTextSize(40);
                     tPaint.setColor(Color.rgb(220, 190, 30));
@@ -85,6 +85,7 @@ public class RectangleBar extends View {
                     tPaint.setColor(Color.rgb(200, 200, 30));
                     c.drawText(textString2, pt.x - 32, pt.y - 60, tPaint);
                 } else if (pos == 1) {
+                    c.drawLine(pt.x, pt.y, pt.x, 0, lPaint);
                     c.drawPath(pathMode1, lPaint);
                     tPaint.setTextSize(40);
                     tPaint.setColor(Color.rgb(220, 190, 30));
@@ -93,6 +94,7 @@ public class RectangleBar extends View {
                     tPaint.setColor(Color.rgb(200, 200, 30));
                     c.drawText(textString2, pt.x + 40, pt.y - 60, tPaint);
                 } else if (pos == 2) {
+                    c.drawLine(pt.x, pt.y, pt.x, 0, lPaint);
                     c.drawPath(pathMode2, lPaint);
                     tPaint.setTextSize(40);
                     tPaint.setColor(Color.rgb(220, 190, 30));
