@@ -8,10 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Random;
 
 public class BarGraph {
@@ -22,6 +19,7 @@ public class BarGraph {
     private BarGraphTouchListener mBarGraphOnTouchListener;
     private boolean isAnimating = false;
     private Handler handler;
+    private OnBarGraphAnimationListener mBarGraphAnimationListener;
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -77,7 +75,7 @@ public class BarGraph {
         handler = new Handler();
     }
 
-    public void addGraph(ArrayList<Integer> dataList,int leftMargin, int rightMargin, BarGraphTouchListener bargraphTouchListener, int animationDuration) {
+    public void addGraph(ArrayList<Integer> dataList,int leftMargin, int rightMargin, BarGraphTouchListener bargraphTouchListener, int animationDuration, OnBarGraphAnimationListener listener) {
         if(dataList==null||dataList.size()==0)return;
         mTotalBars = dataList.size();
         mLeftMargin = leftMargin;
@@ -95,9 +93,9 @@ public class BarGraph {
             lp.gravity = Gravity.BOTTOM;
             view.setLayoutParams(lp);
             view.setId(random.nextInt(1000000) + 1);
-            view.pos = i >= 3 && i <= mTotalBars-4 ? 0 : i < 3 ? 1 : 2;
-            view.textString1 = "" + hr + (hr > 1 ? " Hrs" : " Hr");
-            view.textString2 = new SimpleDateFormat("dd/MM", Locale.ENGLISH).format(new Date());
+//            view.pos = i >= 3 && i <= mTotalBars-4 ? 0 : i < 3 ? 1 : 2;
+//            view.textString1 = "" + hr + (hr > 1 ? " Hrs" : " Hr");
+//            view.textString2 = new SimpleDateFormat("dd/MM", Locale.ENGLISH).format(new Date());
             mBarCon.addView(view);
             mBarCon.invalidate();
 
@@ -112,6 +110,7 @@ public class BarGraph {
             mBottomCon.invalidate();
         }
 
+        mBarGraphAnimationListener = listener;
         if(animationDuration>0)animateGraph(animationDuration);
         mBarGraphOnTouchListener = bargraphTouchListener;
         mBottomCon.setOnTouchListener(onTouchListener);
@@ -120,13 +119,16 @@ public class BarGraph {
 
     public void animateGraph(int duration) {
         isAnimating = true;
+        mBarGraphAnimationListener.onAnimationStart();
         for(int i=0;i<mTotalBars;i++){
             ((RectangleBar) mBarCon.getChildAt(i)).showView(duration);
         }
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 isAnimating = false;
+                mBarGraphAnimationListener.onAnimationEnd();
             }
         },duration);
     }
@@ -134,6 +136,7 @@ public class BarGraph {
     public boolean isAnimating(){
         return isAnimating;
     }
+
 
     private void disableClipOnParents(View v, boolean disable) {
         if (v.getParent() == null) {
@@ -147,5 +150,10 @@ public class BarGraph {
         if (v.getParent() instanceof View) {
             disableClipOnParents((View) v.getParent(), disable);
         }
+    }
+
+    public interface OnBarGraphAnimationListener {
+        void onAnimationStart();
+        void onAnimationEnd();
     }
 }

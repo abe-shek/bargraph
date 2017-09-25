@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class RectangleBar extends View {
@@ -158,7 +159,10 @@ public class RectangleBar extends View {
     }
 
     public void showView(int duration) {
-        if (animate || mode !=0) return;
+        if (animate || mode !=0) {
+            Log.e("rectangleBar", "showView: " + animate + " " + mode );
+            return;
+        }
         animate = true;
         ValueAnimator am = ValueAnimator.ofFloat(0f, 1f);
         am.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

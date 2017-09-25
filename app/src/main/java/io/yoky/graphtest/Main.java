@@ -52,6 +52,21 @@ public class Main extends AppCompatActivity {
     }
 
     BarGraph barGraph;
+    BarGraph.OnBarGraphAnimationListener barAnimationListener = new BarGraph.OnBarGraphAnimationListener() {
+        @Override
+        public void onAnimationStart() {
+
+        }
+
+        @Override
+        public void onAnimationEnd() {
+            if(pendingSelectedPos==-1)return;
+            MonthViewAdapter.MonthViewHolder vh = (MonthViewAdapter.MonthViewHolder) monthCon.findViewHolderForAdapterPosition(pendingSelectedPos);
+            pendingSelectedPos = -1;
+            if (vh != null)vh.clickView.callOnClick();
+        }
+    };
+
     private void initUI() {
         whiteBarCon = (LinearLayout) findViewById(R.id.whiteBarCon_ll);
         yellowBarCon = (LinearLayout) findViewById(R.id.verticalBarCon_ll);
@@ -72,7 +87,7 @@ public class Main extends AppCompatActivity {
             public void onTouch(boolean isHovered, int childIndex) {
                 Log.e("main", "onTouch: " + isHovered + " " + childIndex);
             }
-        }, 1000);
+        }, 1000, barAnimationListener);
         addMonths();
     }
 
@@ -159,7 +174,7 @@ public class Main extends AppCompatActivity {
         return monthData.get(selectedPos).equals(value);
     }
 
-    int selectedPos = -1;
+    int selectedPos = -1, pendingSelectedPos = -1;
 
     class MonthViewAdapter extends RecyclerView.Adapter<MonthViewAdapter.MonthViewHolder> {
         Context mContext;
@@ -185,7 +200,10 @@ public class Main extends AppCompatActivity {
                 holder.clickView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (holder.isSelected ) return;
+                        if (holder.isSelected || barGraph.isAnimating()) {
+                            if(!holder.isSelected)pendingSelectedPos = position;
+                            return;
+                        }
                         setSelectedFalse();
                         barGraph.animateGraph(500);
                         selectedPos = position;
